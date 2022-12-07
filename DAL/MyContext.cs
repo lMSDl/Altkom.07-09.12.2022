@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace DAL
 {
@@ -6,7 +7,10 @@ namespace DAL
     {
 
         private readonly string _connectionString;
+        public MyContext()
+        {
 
+        }
         public MyContext(DbContextOptions options) : base(options)
         {
 
@@ -21,10 +25,25 @@ namespace DAL
         {
             base.OnConfiguring(optionsBuilder);
 
-            if(!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_connectionString);
+                if (_connectionString != null)
+                    optionsBuilder.UseSqlServer(_connectionString /*?? "Server=(local)\\SQLEXPRESS;Database=EFCore6;Integrated security=true"*/);
+                else
+                {
+                    optionsBuilder.UseSqlServer();
+                }
             }
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Company>();
+        }
+
+        public DbSet<Person> People { get; }
+        //public DbSet<Company> Companies { get; }
     }
 }
