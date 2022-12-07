@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
-    public class Person
+    public class Person : Entity
     {
-        public int Id { get; set; }
         //[Column("Name")]
         public string FirstName { get; set; } = "";
         //[MaxLength(15)]
