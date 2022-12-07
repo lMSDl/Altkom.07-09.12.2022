@@ -48,7 +48,7 @@ namespace DAL
             //automatyczne zaczytywanie wszystkich konfiguracji ze wskazanego assembly
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 
-            modelBuilder.Ignore<Address>();
+            //modelBuilder.Ignore<Address>();
 
             //modelBuilder.Entity<Company>();
         }

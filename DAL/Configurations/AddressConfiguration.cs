@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Configurations
 {
-    public class CompanyConfiguration : IEntityTypeConfiguration<Company>
+    public class AddressConfiguration : IEntityTypeConfiguration<Address>
     {
-        public void Configure(EntityTypeBuilder<Company> builder)
+        public void Configure(EntityTypeBuilder<Address> builder)
         {
-            builder.ToTable("Companies");
-
-            builder.Ignore(x => x.Address);
+            builder.ToTable("Addresses");
         }
     }
 }
