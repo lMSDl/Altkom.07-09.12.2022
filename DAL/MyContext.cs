@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DAL.Configurations;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace DAL
@@ -40,10 +41,19 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Company>();
+            //ręczne dodawanie konfiguracji
+            //modelBuilder.ApplyConfiguration(new PersonConfiguration());
+            //modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+
+            //automatyczne zaczytywanie wszystkich konfiguracji ze wskazanego assembly
+            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+
+            modelBuilder.Ignore<Address>();
+
+            //modelBuilder.Entity<Company>();
         }
 
-        public DbSet<Person> People { get; }
+        //public DbSet<Person> People { get; }
         //public DbSet<Company> Companies { get; }
     }
 }

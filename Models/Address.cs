@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    [NotMapped] //globalne pominięcie mapowania
+    //[NotMapped] //globalne pominięcie mapowania
     public class Address
     {
         public string Street { get; set; } = "";
