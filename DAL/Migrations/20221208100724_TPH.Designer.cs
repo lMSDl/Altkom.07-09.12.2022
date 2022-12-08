@@ -4,6 +4,7 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20221208100724_TPH")]
+    partial class TPH
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,20 +144,6 @@ namespace DAL.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Models.Educator", b =>
-                {
-                    b.HasBaseType("Models.Person");
-
-                    b.Property<float>("Salary")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Specialization")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Educators", (string)null);
-                });
-
             modelBuilder.Entity("Models.LargeCompany", b =>
                 {
                     b.HasBaseType("Models.Company");
@@ -171,34 +159,6 @@ namespace DAL.Migrations
                     b.HasBaseType("Models.Company");
 
                     b.HasDiscriminator().HasValue("SmallCompany");
-                });
-
-            modelBuilder.Entity("Models.Student", b =>
-                {
-                    b.HasBaseType("Models.Person");
-
-                    b.Property<int>("IndexNumber")
-                        .HasColumnType("int");
-
-                    b.ToTable("Students", (string)null);
-                });
-
-            modelBuilder.Entity("Models.Educator", b =>
-                {
-                    b.HasOne("Models.Person", null)
-                        .WithOne()
-                        .HasForeignKey("Models.Educator", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Models.Student", b =>
-                {
-                    b.HasOne("Models.Person", null)
-                        .WithOne()
-                        .HasForeignKey("Models.Student", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
