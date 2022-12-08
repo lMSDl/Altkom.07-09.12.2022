@@ -19,6 +19,9 @@ dotnet tool uninstall --global dotnet-ef
   dotnet ef migrations remove [-f]
   
   dotnet ef database update [--connection "<connection string>"]
+  
+  dotnet ef migrations script [<nazwa_migracji_od>]  [<nazwa_migracji_do>]
+  dotnet ef migrations bundle
   ```
   * Package Manager Console
   ```
@@ -26,6 +29,9 @@ dotnet tool uninstall --global dotnet-ef
   Remove-Migration [-f]
   
   Update-Database [-Connection "<connection string>"]
+  
+  Script-Migration
+  Bundle-Migration
   ```
   
 * ConnectionString dla MSSql
