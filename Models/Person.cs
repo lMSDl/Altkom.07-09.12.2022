@@ -10,7 +10,9 @@ namespace Models
         //[MaxLength(15)]
         [MinLength(10)]
         //[Required]
-        public string? LastName { get; set; }
+        public string? LastName { get; set; } = "Kowalski";
+
+        public string FullName { get; }// => $"{FirstName} {LastName}";
 
         //public DateTime? BirthDate { get; set; }
         //[Column(TypeName = "decimal(11,0)")]

@@ -9,15 +9,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Configurations
 {
-    public class CompanyConfiguration : EntityConfiguration<Company>
+    public abstract class EntityConfiguration<T> : IEntityTypeConfiguration<T> where T : Entity
     {
-        public override void Configure(EntityTypeBuilder<Company> builder)
+        public virtual void Configure(EntityTypeBuilder<T> builder)
         {
-            base.Configure(builder);
-
-            builder.ToTable("Companies");
-
-            builder.Ignore(x => x.Address);
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("getdate()");
         }
     }
 }

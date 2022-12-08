@@ -9,19 +9,23 @@ using System.Threading.Tasks;
 
 namespace DAL.Configurations
 {
-    public class PersonConfiguration : IEntityTypeConfiguration<Person>
+    public class PersonConfiguration : EntityConfiguration<Person>
     {
-        public void Configure(EntityTypeBuilder<Person> builder)
+        public override void Configure(EntityTypeBuilder<Person> builder)
         {
+            base.Configure(builder);
+
             builder.ToTable("People");
 
             builder.Property(x => x.FirstName).HasColumnName("Name");
 
-            builder.Property(x => x.LastName).HasMaxLength(15);
+            builder.Property(x => x.LastName).HasMaxLength(15).HasDefaultValue("Kowalski");
 
             builder.Property(x => x.PESEL)/*.HasColumnType("decimal(11,0)")*/.HasPrecision(11, 0);
 
             builder.Ignore(x => x.Address);
+
+            builder.Property(x => x.FullName).HasComputedColumnSql("[Name] + ' ' + [LastName]", stored: true);
         }
     }
 }

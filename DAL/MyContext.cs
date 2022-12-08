@@ -55,5 +55,17 @@ namespace DAL
 
         //public DbSet<Person> People { get; }
         //public DbSet<Company> Companies { get; }
+
+
+        public override int SaveChanges()
+        {
+            ChangeTracker.Entries<Entity>()
+                .Where(x => x.State == EntityState.Modified)
+                .Select(x => x.Entity)
+                .ToList()
+                .ForEach(x => x.UpdatedAt = DateTime.Now);
+
+            return base.SaveChanges();
+        }
     }
 }
