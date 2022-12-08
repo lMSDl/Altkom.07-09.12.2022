@@ -23,7 +23,8 @@ namespace DAL.Configurations
 
             builder.HasIndex(x => x.ZipCode).HasDatabaseName("Index_ZipCode");
 
-            builder.HasIndex(x => new { x.Street, x.City }).IsUnique();
+            builder.HasIndex(x => new { x.Street, x.City }).IsUnique()
+                .IncludeProperties(x => x.ZipCode);
         }
     }
 }
