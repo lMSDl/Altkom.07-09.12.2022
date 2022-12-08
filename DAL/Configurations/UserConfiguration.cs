@@ -30,8 +30,7 @@ namespace DAL.Configurations
             //builder.Property(x => x.UserType).HasConversion(new EnumToStringConverter<UserType>());
             builder.Property(x => x.UserType).HasConversion<string>();
 
-            builder.HasData(new User { UserType = UserType.Admin, Username = "SuperAdmin", Password = "nimdA" },
-                new User { UserType = UserType.User, Username = "User", Password = "resU" });
+            builder.HasData(User.DEFAULT_USERS);
         }
     }
 }

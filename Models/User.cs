@@ -13,6 +13,14 @@ namespace Models
         public string Username { get; set; } = "";
         public string Password {get; set;} = "";
 
-        public UserType UserType { get; set; } 
+        public UserType UserType { get; set; }
+
+
+
+        public static IEnumerable<User> DEFAULT_USERS => new List<User>
+        {
+                new User { UserType = UserType.Admin, Username = "SuperAdmin", Password = "nimdA" },
+                new User { UserType = UserType.User, Username = "User", Password = "resU" }
+        };
     }
 }
