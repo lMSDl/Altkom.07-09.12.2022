@@ -21,6 +21,8 @@ namespace DAL.Configurations
             //builder.Property<bool>("ShadowProperty");
 
             builder.HasOne(x => x.Engine).WithMany(x => x.Vehicles);
+
+            builder.HasMany(x => x.Drivers).WithMany(x => x.Vehicles);
         }
     }
 }
