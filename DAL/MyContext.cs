@@ -14,7 +14,6 @@ namespace DAL
         }
         public MyContext(DbContextOptions options) : base(options)
         {
-
         }
 
         public MyContext(string connectionString)

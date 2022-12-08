@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,9 @@ namespace DAL.Configurations
             builder.HasOne(x => x.Registration).WithOne(x => x.Vehicle).HasForeignKey<Vehicle>("RegistrationId")
                 .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict);
 
-
             //builder.Property<bool>("ShadowProperty");
+
+            builder.HasOne(x => x.Engine).WithMany(x => x.Vehicles);
         }
     }
 }

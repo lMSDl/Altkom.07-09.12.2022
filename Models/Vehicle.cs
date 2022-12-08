@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public  class Vehicle : Entity
+    public class Vehicle : Entity
     {
         public string Name { get; set; } = "";
 
         //public int RegistrationId { get; set; }
-        public Registration? Registration { get; set; } 
-
+        public Registration? Registration { get; set; }
+        public Engine? Engine {get; set;}
     }
 }
