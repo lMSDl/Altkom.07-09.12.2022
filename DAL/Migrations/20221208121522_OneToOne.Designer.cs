@@ -4,6 +4,7 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20221208121522_OneToOne")]
+    partial class OneToOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,7 +152,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Registration", (string)null);
+                    b.ToTable("Registration");
                 });
 
             modelBuilder.Entity("Models.User", b =>
@@ -184,7 +186,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RegistrationId")
+                    b.Property<int>("RegistrationId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -193,10 +195,9 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RegistrationId")
-                        .IsUnique()
-                        .HasFilter("[RegistrationId] IS NOT NULL");
+                        .IsUnique();
 
-                    b.ToTable("Vehicle", (string)null);
+                    b.ToTable("Vehicle");
                 });
 
             modelBuilder.Entity("Models.Educator", b =>
@@ -245,7 +246,8 @@ namespace DAL.Migrations
                     b.HasOne("Models.Registration", "Registration")
                         .WithOne("Vehicle")
                         .HasForeignKey("Models.Vehicle", "RegistrationId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Registration");
                 });
