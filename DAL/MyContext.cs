@@ -8,10 +8,12 @@ namespace DAL
     {
 
         private readonly string _connectionString;
+#if DEBUG
         public MyContext()
         {
 
         }
+#endif
         public MyContext(DbContextOptions options) : base(options)
         {
         }
@@ -55,6 +57,7 @@ namespace DAL
         //public DbSet<Person> People { get; }
         //public DbSet<Company> Companies { get; }
 
+        public DbSet<Vehicle> Vehicle { get; set; }
 
         public override int SaveChanges()
         {

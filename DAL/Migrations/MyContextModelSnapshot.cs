@@ -34,7 +34,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("VehiclesId");
 
-                    b.ToTable("DriverVehicle");
+                    b.ToTable("DriverVehicle", (string)null);
                 });
 
             modelBuilder.Entity("Models.Address", b =>
@@ -123,7 +123,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Driver");
+                    b.ToTable("Driver", (string)null);
                 });
 
             modelBuilder.Entity("Models.Engine", b =>
@@ -147,7 +147,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Engine");
+                    b.ToTable("Engine", (string)null);
                 });
 
             modelBuilder.Entity("Models.Person", b =>
@@ -214,7 +214,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Registration");
+                    b.ToTable("Registration", (string)null);
                 });
 
             modelBuilder.Entity("Models.User", b =>
@@ -269,7 +269,7 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasFilter("[RegistrationId] IS NOT NULL");
 
-                    b.ToTable("Vehicle");
+                    b.ToTable("Vehicle", (string)null);
                 });
 
             modelBuilder.Entity("Models.Educator", b =>
