@@ -41,3 +41,14 @@ Sercer=(local);Database=<name>;Integrated security=true
 Sercer=<ip>;Database=<name>;User Id=<user>;Password=<password>
 Sercer=(local)\SQLExpress;Database=<name>;Integrated security=true
 ```
+* Db First
+  * CLI
+  ```
+  dotnet ef dbcontext scaffold <connection string> <provider package>
+  dotnet ef dbcontext scaffold "Server=(local)\SQLExpress;Database=EFCore6;Integrated security=true" Microsoft.EntityFrameworkCore.SqlServer
+  ```
+  * Package Manager Console
+  ```
+  Scaffold-DbContext <connection string> <provider package>
+  Scaffold-DbContext "Server=(local)\SQLExpress;Database=EFCore6;Integrated security=true" Microsoft.EntityFrameworkCore.SqlServer
+  ```
