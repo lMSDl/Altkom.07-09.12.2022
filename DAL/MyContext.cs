@@ -1,6 +1,7 @@
 ﻿using DAL.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Components;
 
 namespace DAL
 {
@@ -58,6 +59,10 @@ namespace DAL
         //public DbSet<Company> Companies { get; }
 
         public DbSet<Vehicle> Vehicle { get; set; }
+
+        public DbSet<Component> Components { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<SubComponent> SubComponents { get; set; }
 
         public override int SaveChanges()
         {
