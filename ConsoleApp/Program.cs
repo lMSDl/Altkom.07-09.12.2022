@@ -13,7 +13,53 @@ var connectionString = "Server=(local)\\SQLEXPRESS;Database=EFCore6;Integrated s
 var options = new DbContextOptionsBuilder().UseSqlServer(connectionString).Options;
 
 AddUpdateDelete(options);
-// Components(options);
+Components(options);
+
+using (var context = new MyContext(options))
+{
+    var vehicles = context.Set<Vehicle>().ToList();
+    vehicles[0].Registration = context.Set<Registration>().AsNoTracking().Where(x => x.Vehicle.Id == vehicles[0].Id).SingleOrDefault();
+    //Load - pobiera wskazane referencje lub kolekcje z bazy danych
+    context.Entry(vehicles[1]).Reference(x => x.Engine).Load();
+    context.Entry(vehicles[1]).Collection(x => x.Drivers).Load();
+
+    //AsNoTracking - powoduje nie dodawanie encji do contextu
+    //Include - pobiera wskazane referencje z bazy danych
+    vehicles = context.Set<Vehicle>().AsNoTracking().Include(x => x.Registration).Include(x => x.Engine).Include(x => x.Drivers).ToList();
+
+    //context.ChangeTracker.Clear();
+
+    IQueryable<Vehicle> query = context.Set<Vehicle>();
+
+    Console.WriteLine($"\nInclude registration?");
+    if (Console.ReadKey().KeyChar == 'y')
+    {
+        query = query.Include(x => x.Registration);
+    }
+    Console.WriteLine($"\nInclude engine?");
+    if (Console.ReadKey().KeyChar == 'y')
+    {
+        query = query.Include(x => x.Engine);
+    }
+    Console.WriteLine($"\nInclude drivers?");
+    if (Console.ReadKey().KeyChar == 'y')
+    {
+        query = query.Include(x => x.Drivers);
+    }
+
+    Console.WriteLine($"\nSort by name descending?");
+    if (Console.ReadKey().KeyChar == 'y')
+    {
+        query = query.OrderByDescending(x => x.Name);
+    }
+
+    vehicles = query.ToList();
+
+    Console.WriteLine(JsonConvert.SerializeObject(vehicles, new JsonSerializerSettings() { Formatting = Formatting.Indented, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+
+
+
+}
 
 
 
@@ -21,7 +67,8 @@ AddUpdateDelete(options);
 
 
 
-static void Components(DbContextOptions options)
+
+    static void Components(DbContextOptions options)
 {
     var statuses = new[] { "A", "B", "C", "D" };
     using (var context = new MyContext(options))
