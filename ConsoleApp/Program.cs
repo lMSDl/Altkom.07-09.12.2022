@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.Components;
 using Newtonsoft.Json;
+using Services;
 
 //var connectionString = "Server=(localdb)\\mssqllocaldb;Database=EFCore6;";// AttachDBFilename=c:\\test\\abc.mdf";
 var connectionString = "Server=(local)\\SQLEXPRESS;Database=EFCore6;Integrated security=true";
@@ -14,63 +15,47 @@ var options = new DbContextOptionsBuilder().UseSqlServer(connectionString).Optio
 
 AddUpdateDelete(options);
 Components(options);
+Read(options);
 
+int id;
 using (var context = new MyContext(options))
 {
-    var vehicles = context.Set<Vehicle>().ToList();
-    vehicles[0].Registration = context.Set<Registration>().AsNoTracking().Where(x => x.Vehicle.Id == vehicles[0].Id).SingleOrDefault();
-    //Load - pobiera wskazane referencje lub kolekcje z bazy danych
-    context.Entry(vehicles[1]).Reference(x => x.Engine).Load();
-    context.Entry(vehicles[1]).Collection(x => x.Drivers).Load();
+    var service = new PeopleService(context);
 
-    //AsNoTracking - powoduje nie dodawanie encji do contextu
-    //Include - pobiera wskazane referencje z bazy danych
-    vehicles = context.Set<Vehicle>().AsNoTracking().Include(x => x.Registration).Include(x => x.Engine).Include(x => x.Drivers).ToList();
-
-    //context.ChangeTracker.Clear();
-
-    IQueryable<Vehicle> query = context.Set<Vehicle>();
-
-    Console.WriteLine($"\nInclude registration?");
-    if (Console.ReadKey().KeyChar == 'y')
-    {
-        query = query.Include(x => x.Registration);
-    }
-    Console.WriteLine($"\nInclude engine?");
-    if (Console.ReadKey().KeyChar == 'y')
-    {
-        query = query.Include(x => x.Engine);
-    }
-    Console.WriteLine($"\nInclude drivers?");
-    if (Console.ReadKey().KeyChar == 'y')
-    {
-        query = query.Include(x => x.Drivers);
-    }
-
-    Console.WriteLine($"\nSort by name descending?");
-    if (Console.ReadKey().KeyChar == 'y')
-    {
-        query = query.OrderByDescending(x => x.Name);
-    }
-
-    vehicles = query.ToList();
-
-    Console.WriteLine(JsonConvert.SerializeObject(vehicles, new JsonSerializerSettings() { Formatting = Formatting.Indented, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
-}
-
-using (var context = new MyContext(options))
-{
-    var components = context.Set<Component>().AsNoTracking().Include(x => x.SubComponents).ThenInclude(x => x.Status).ToList();
+    id = await service.CreateAsync(new Person { FirstName = "Ewa", LastName = "Ewowska", PESEL = 12312312312 });
 
 
-    Console.WriteLine(JsonConvert.SerializeObject(components, new JsonSerializerSettings() { Formatting = Formatting.Indented, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
-
+    var person = service.ReadAsync(id);
 }
 
 
+using (var context = new MyContext(options))
+{
+    var service = new PeopleService(context);
+    var person = await service.ReadAsync(id);
+
+    ToJson(person);
+}
+
+{
+    var person = new Person();
+    person.LastName = "Monikowska";
+    person.FirstName = "Monika";
+
+    using (var context = new MyContext(options))
+    {
+        var service = new PeopleService(context);
+        await service.UpdateAsync(id, person);
+    }
+    ToJson(person);
+}
 
 
-
+using (var context = new MyContext(options))
+{
+    var service = new PeopleService(context);
+    await service.DeleteAsync(id);
+}
 
 
 static void Components(DbContextOptions options)
@@ -218,4 +203,63 @@ static void AddUpdateDelete(DbContextOptions options)
 
         context.SaveChanges();
     }
+}
+
+static void Read(DbContextOptions options)
+{
+    using (var context = new MyContext(options))
+    {
+        var vehicles = context.Set<Vehicle>().ToList();
+        vehicles[0].Registration = context.Set<Registration>().AsNoTracking().Where(x => x.Vehicle.Id == vehicles[0].Id).SingleOrDefault();
+        //Load - pobiera wskazane referencje lub kolekcje z bazy danych
+        context.Entry(vehicles[1]).Reference(x => x.Engine).Load();
+        context.Entry(vehicles[1]).Collection(x => x.Drivers).Load();
+
+        //AsNoTracking - powoduje nie dodawanie encji do contextu
+        //Include - pobiera wskazane referencje z bazy danych
+        vehicles = context.Set<Vehicle>().AsNoTracking().Include(x => x.Registration).Include(x => x.Engine).Include(x => x.Drivers).ToList();
+
+        //context.ChangeTracker.Clear();
+
+        IQueryable<Vehicle> query = context.Set<Vehicle>();
+
+        Console.WriteLine($"\nInclude registration?");
+        if (Console.ReadKey().KeyChar == 'y')
+        {
+            query = query.Include(x => x.Registration);
+        }
+        Console.WriteLine($"\nInclude engine?");
+        if (Console.ReadKey().KeyChar == 'y')
+        {
+            query = query.Include(x => x.Engine);
+        }
+        Console.WriteLine($"\nInclude drivers?");
+        if (Console.ReadKey().KeyChar == 'y')
+        {
+            query = query.Include(x => x.Drivers);
+        }
+
+        Console.WriteLine($"\nSort by name descending?");
+        if (Console.ReadKey().KeyChar == 'y')
+        {
+            query = query.OrderByDescending(x => x.Name);
+        }
+
+        vehicles = query.ToList();
+
+        Console.WriteLine(JsonConvert.SerializeObject(vehicles, new JsonSerializerSettings() { Formatting = Formatting.Indented, PreserveReferencesHandling = PreserveReferencesHandling.Objects }));
+    }
+
+    using (var context = new MyContext(options))
+    {
+        var components = context.Set<Component>().AsNoTracking().Include(x => x.SubComponents).ThenInclude(x => x.Status).ToList();
+
+        ToJson(components);
+
+    }
+}
+
+static void ToJson(object obj)
+{
+    Console.WriteLine(JsonConvert.SerializeObject(obj, new JsonSerializerSettings() { Formatting = Formatting.Indented, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
 }
