@@ -53,12 +53,19 @@ using (var context = new MyContext(options))
 
 using (var context = new MyContext(options))
 {
-    var service = new PeopleService(context);
+    var service = new CrudService<Person>(context);
     await service.DeleteAsync(id);
 }
 
+using (var context = new MyContext(options))
+{
+    var service = new CrudService<Driver>(context);
 
-static void Components(DbContextOptions options)
+    ToJson(await service.ReadAsync());
+}
+
+
+    static void Components(DbContextOptions options)
 {
     var statuses = new[] { "A", "B", "C", "D" };
     using (var context = new MyContext(options))

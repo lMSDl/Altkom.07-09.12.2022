@@ -20,5 +20,11 @@ namespace WebApp.Controllers
         {
             return Ok(await service.ReadAsync());
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(string firstName)
+        {
+            return Ok(await service.ReadByFirstName(firstName));
+        }
     }
 }

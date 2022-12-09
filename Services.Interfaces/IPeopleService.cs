@@ -2,12 +2,8 @@
 
 namespace Services.Interfaces
 {
-    public interface IPeopleService
+    public interface IPeopleService : ICrudService<Person>
     {
-        Task<int> CreateAsync(Person entity);
-        Task<IEnumerable<Person>> ReadAsync();
-        Task<Person?> ReadAsync(int id);
-        Task UpdateAsync(int id, Person entity);
-        Task DeleteAsync(int id);
+        Task<IEnumerable<Person>> ReadByFirstName(string firstName);
     }
 }

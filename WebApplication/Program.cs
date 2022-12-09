@@ -12,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DbContext, MyContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 builder.Services.AddScoped<IPeopleService, PeopleService>();
+builder.Services.AddScoped<ICrudService<Vehicle>, CrudService<Vehicle>>();
+builder.Services.AddScoped<ICrudService<Engine>, CrudService<Engine>>();
 
 var app = builder.Build();
 

@@ -4,44 +4,18 @@ using Services.Interfaces;
 
 namespace Services
 {
-    public class PeopleService : IPeopleService
+    public class PeopleService : CrudService<Person>, IPeopleService
     {
-        private readonly DbContext context;
+        //private readonly DbContext context;
 
-        public PeopleService(DbContext context)
+        public PeopleService(DbContext context) : base(context)
         {
-            this.context = context;
+            //this.context = context;
         }
 
-        public async Task<int> CreateAsync(Person entity)
+        public async Task<IEnumerable<Person>> ReadByFirstName(string firstName)
         {
-            await context.Set<Person>().AddAsync(entity);
-            await context.SaveChangesAsync();
-            return entity.Id;
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            context.Set<Person>().Remove(new Person { Id = id });
-            await context.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<Person>> ReadAsync()
-        {
-            return await context.Set<Person>().AsNoTracking().ToListAsync();
-        }
-
-        public async Task<Person?> ReadAsync(int id)
-        {
-            //return await context.Set<Person>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
-            return await context.Set<Person>().FindAsync(id);
-        }
-
-        public async Task UpdateAsync(int id, Person entity)
-        {
-            entity.Id = id;
-            context.Set<Person>().Update(entity);
-            await context.SaveChangesAsync();
+            return await context.Set<Person>().Where(x => x.FirstName == firstName).ToListAsync();
         }
     }
 }
