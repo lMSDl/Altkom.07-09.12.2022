@@ -17,5 +17,35 @@ namespace Services
         {
             return await context.Set<Person>().Where(x => x.FirstName == firstName).ToListAsync();
         }
+
+        public async Task<IEnumerable<Person>> ReadByFirstNameAsync(string firstName, CancellationToken cancellation)
+        {
+            var people =  await context.Set<Person>().Where(x => x.FirstName == firstName).ToListAsync(cancellation);
+
+            
+            if(cancellation.IsCancellationRequested)
+            {
+                return null;
+            }
+
+            try
+            {
+
+                foreach (var person in people)
+                {
+                    await Task.Delay(5000, cancellation);
+                    person.PESEL = 00000000;
+                    cancellation.ThrowIfCancellationRequested();
+                }
+                cancellation.ThrowIfCancellationRequested();
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+
+            return people;
+
+        }
     }
 }

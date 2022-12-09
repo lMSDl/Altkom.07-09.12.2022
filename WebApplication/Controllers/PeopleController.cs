@@ -21,10 +21,12 @@ namespace WebApp.Controllers
             return Ok(await service.ReadAsync());
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(string firstName)
+        [HttpGet("{firstName}")]
+        public async Task<IActionResult> Get(string firstName, CancellationToken cancellation)
         {
-            return Ok(await service.ReadByFirstName(firstName));
+
+            var people = await service.ReadByFirstNameAsync(firstName, cancellation);
+            return Ok(people);
         }
     }
 }
