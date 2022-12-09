@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "WebApplic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{2F7832C2-7EB3-4BDC-9558-7394103B5B06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{E3CE8A36-38ED-402B-BE25-BF1DE087AE0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E3CE8A36-38ED-402B-BE25-BF1DE087AE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Interfaces", "Services.Interfaces\Services.Interfaces.csproj", "{D2DA2407-E68B-4EBE-9F25-E4FC5F7E8B1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Interfaces", "Services.Interfaces\Services.Interfaces.csproj", "{D2DA2407-E68B-4EBE-9F25-E4FC5F7E8B1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.DbFirst", "DAL.DbFirst\DAL.DbFirst.csproj", "{F2A4BFBA-ECED-4BDE-B68A-0DB49FB6A327}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D2DA2407-E68B-4EBE-9F25-E4FC5F7E8B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2DA2407-E68B-4EBE-9F25-E4FC5F7E8B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2DA2407-E68B-4EBE-9F25-E4FC5F7E8B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A4BFBA-ECED-4BDE-B68A-0DB49FB6A327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A4BFBA-ECED-4BDE-B68A-0DB49FB6A327}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A4BFBA-ECED-4BDE-B68A-0DB49FB6A327}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A4BFBA-ECED-4BDE-B68A-0DB49FB6A327}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,92 +16,54 @@ var options = new DbContextOptionsBuilder().UseSqlServer(connectionString).Optio
 AddUpdateDelete(options);
 Components(options);
 Read(options);
+await Services(options);
 
-int id;
-using (var context = new MyContext(options))
+
+using (var context = new DAL.DbFirst.EFCore6Context(options))
 {
-    var service = new PeopleService(context);
-
-    id = await service.CreateAsync(new Person { FirstName = "Ewa", LastName = "Ewowska", PESEL = 12312312312 });
+    ToJson( context.Set<DAL.DbFirst.Vehicle>().ToList());
 
 
-    var person = service.ReadAsync(id);
-}
-
-
-using (var context = new MyContext(options))
-{
-    var service = new PeopleService(context);
-    var person = await service.ReadAsync(id);
-
-    ToJson(person);
-}
-
-{
-    var person = new Person();
-    person.LastName = "Monikowska";
-    person.FirstName = "Monika";
-
-    using (var context = new MyContext(options))
-    {
-        var service = new PeopleService(context);
-        await service.UpdateAsync(id, person);
-    }
-    ToJson(person);
-}
-
-
-using (var context = new MyContext(options))
-{
-    var service = new CrudService<Person>(context);
-    await service.DeleteAsync(id);
-}
-
-using (var context = new MyContext(options))
-{
-    var service = new CrudService<Driver>(context);
-
-    ToJson(await service.ReadAsync());
 }
 
 
     static void Components(DbContextOptions options)
-{
-    var statuses = new[] { "A", "B", "C", "D" };
-    using (var context = new MyContext(options))
     {
-
-        foreach (var status in statuses)
-        {
-            context.Statuses.Add(new Status { Id = status });
-        }
-        context.SaveChanges();
-    }
-
-    using (var context = new MyContext(options))
-    {
-        var component = new Component();
-        context.Components.Add(component);
-        context.SaveChanges();
-    }
-    using (var context = new MyContext(options))
-    {
-        for (int i = 0; i < 10; i++)
+        var statuses = new[] { "A", "B", "C", "D" };
+        using (var context = new MyContext(options))
         {
 
-            var subComponent = new SubComponent();
-            subComponent.Status = new Status() { Id = statuses[i % 4] }; ;
-            subComponent.Component = new Component { Id = 1 };
-            context.Attach(subComponent.Status);
-            context.Attach(subComponent.Component);
-
-            context.Add(subComponent);
+            foreach (var status in statuses)
+            {
+                context.Statuses.Add(new Status { Id = status });
+            }
             context.SaveChanges();
-            //alternatywą do usuwania DbContext jest czyszczenie ChangeTrackera
-            context.ChangeTracker.Clear();
+        }
+
+        using (var context = new MyContext(options))
+        {
+            var component = new Component();
+            context.Components.Add(component);
+            context.SaveChanges();
+        }
+        using (var context = new MyContext(options))
+        {
+            for (int i = 0; i < 10; i++)
+            {
+
+                var subComponent = new SubComponent();
+                subComponent.Status = new Status() { Id = statuses[i % 4] }; ;
+                subComponent.Component = new Component { Id = 1 };
+                context.Attach(subComponent.Status);
+                context.Attach(subComponent.Component);
+
+                context.Add(subComponent);
+                context.SaveChanges();
+                //alternatywą do usuwania DbContext jest czyszczenie ChangeTrackera
+                context.ChangeTracker.Clear();
+            }
         }
     }
-}
 
 static void AddUpdateDelete(DbContextOptions options)
 {
@@ -269,4 +231,54 @@ static void Read(DbContextOptions options)
 static void ToJson(object obj)
 {
     Console.WriteLine(JsonConvert.SerializeObject(obj, new JsonSerializerSettings() { Formatting = Formatting.Indented, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+}
+
+static async Task Services(DbContextOptions options)
+{
+    int id;
+    using (var context = new MyContext(options))
+    {
+        var service = new PeopleService(context);
+
+        id = await service.CreateAsync(new Person { FirstName = "Ewa", LastName = "Ewowska", PESEL = 12312312312 });
+
+
+        var person = service.ReadAsync(id);
+    }
+
+
+    using (var context = new MyContext(options))
+    {
+        var service = new PeopleService(context);
+        var person = await service.ReadAsync(id);
+
+        ToJson(person);
+    }
+
+    {
+        var person = new Person();
+        person.LastName = "Monikowska";
+        person.FirstName = "Monika";
+
+        using (var context = new MyContext(options))
+        {
+            var service = new PeopleService(context);
+            await service.UpdateAsync(id, person);
+        }
+        ToJson(person);
+    }
+
+
+    using (var context = new MyContext(options))
+    {
+        var service = new CrudService<Person>(context);
+        await service.DeleteAsync(id);
+    }
+
+    using (var context = new MyContext(options))
+    {
+        var service = new CrudService<Driver>(context);
+
+        ToJson(await service.ReadAsync());
+    }
 }
