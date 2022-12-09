@@ -56,8 +56,14 @@ using (var context = new MyContext(options))
     vehicles = query.ToList();
 
     Console.WriteLine(JsonConvert.SerializeObject(vehicles, new JsonSerializerSettings() { Formatting = Formatting.Indented, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+}
+
+using (var context = new MyContext(options))
+{
+    var components = context.Set<Component>().AsNoTracking().Include(x => x.SubComponents).ThenInclude(x => x.Status).ToList();
 
 
+    Console.WriteLine(JsonConvert.SerializeObject(components, new JsonSerializerSettings() { Formatting = Formatting.Indented, ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
 
 }
 
@@ -67,8 +73,7 @@ using (var context = new MyContext(options))
 
 
 
-
-    static void Components(DbContextOptions options)
+static void Components(DbContextOptions options)
 {
     var statuses = new[] { "A", "B", "C", "D" };
     using (var context = new MyContext(options))
